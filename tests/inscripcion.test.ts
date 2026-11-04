@@ -11,6 +11,8 @@ const esquema = crearEsquemaInscripcion(() => HOY);
 const ced = (b: string) => b + digitoVerificadorCedula(b);
 
 const valido = () => ({
+  supervisor_cedula: ced("4020000001"),
+  supervisor_nombre: "Juan Rodríguez",
   cedula: ced("0011234567"),
   fecha_expiracion: "2030-01-01",
   nombres: "Ana María",
@@ -49,7 +51,8 @@ describe("catálogo de campos JCE", () => {
   it("no repite claves y cada select tiene opciones", () => {
     expect(new Set(CLAVES_CAMPOS).size).toBe(CLAVES_CAMPOS.length);
     for (const c of CAMPOS) if (c.tipo === "select") expect(c.opciones?.length, c.clave).toBeGreaterThan(0);
-    expect(SECCIONES).toHaveLength(6);
+    expect(SECCIONES).toHaveLength(7);
+    expect(SECCIONES[0].id).toBe("supervisor");
     const quitados = ["fecha_expedicion", "cedula_anterior", "acta_oficialia", "acta_libro", "acta_folio", "acta_numero",
       "acta_anio", "nombre_padre", "nombre_madre", "cargo_solicitado", "jurisdiccion_nivel", "jurisdiccion_provincia",
       "jurisdiccion_municipio", "jurisdiccion_distrito_municipal", "referido_por_cedula", "observaciones"];
@@ -60,6 +63,10 @@ describe("catálogo de campos JCE", () => {
     const sql = readFileSync(path.join(__dirname, "../supabase/migrations/0001_inscripciones.sql"), "utf8");
     const tabla = sql.slice(sql.indexOf("create table if not exists crm.inscripciones"));
     for (const k of CLAVES_CAMPOS) expect(tabla, k).toMatch(new RegExp(`^\\s+${k}\\s`, "m"));
+  });
+
+  it("pide los datos del supervisor primero", () => {
+    expect(SECCIONES[0].campos.map((c) => c.clave)).toEqual(["supervisor_cedula", "supervisor_nombre", "supervisor_telefono"]);
   });
 
   it("ofrece las 32 demarcaciones provinciales", () => {
@@ -132,6 +139,18 @@ describe("esquema de inscripción", () => {
     const e = erroresPorCampo(r.error);
     expect(e._formulario).toMatch(/preferencia_politica/);
     expect(e.consentimiento_tratamiento).toBeDefined();
+  });
+});
+
+describe("supervisor", () => {
+  it("valida la cédula del supervisor y que no sea la del inscrito", () => {
+    const c = valido().supervisor_cedula;
+    const mala = esquema.safeParse({ ...valido(), supervisor_cedula: c.slice(0, 10) + ((Number(c[10]) + 1) % 10) });
+    expect(mala.success).toBe(false);
+    const misma = esquema.safeParse({ ...valido(), supervisor_cedula: valido().cedula });
+    expect(misma.success).toBe(false);
+    if (misma.success) return;
+    expect(erroresPorCampo(misma.error).supervisor_cedula).toMatch(/misma/);
   });
 });
 

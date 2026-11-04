@@ -112,6 +112,9 @@ export function crearEsquemaInscripcion(hoy: () => Date = () => new Date()) {
         if (!d.exterior_pais) err("exterior_pais", "Indique el país.");
       }
 
+      if (d.supervisor_cedula && d.supervisor_cedula === d.cedula) {
+        err("supervisor_cedula", "La cédula del supervisor no puede ser la misma de la persona inscrita.");
+      }
       if (d.consentimiento_comunicaciones && !d.telefono_movil && !d.email) {
         err("consentimiento_comunicaciones", "Indique al menos un medio de contacto.");
       }

@@ -6,12 +6,13 @@ import { PROVINCIAS } from "@/lib/territorio/provincias";
  * Incluye los campos que la Junta Central Electoral (JCE) registra para una
  * persona en la Cédula de Identidad y Electoral y en el Padrón Electoral
  * (domicilio y lugar de votación), más los campos propios de POLÍTICA 28
- * (contacto y consentimientos).
+ * (supervisor, contacto y consentimientos).
  *
  * Origen de cada campo:
  *  - "JCE_CEDULA"    → impreso o registrado en la cédula de identidad y electoral.
  *  - "JCE_PADRON"    → domicilio electoral y lugar de votación en el padrón.
  *  - "CONTACTO"      → datos de contacto voluntarios (CRM, no provienen de la JCE).
+ *  - "SUPERVISOR"    → supervisor que registra o acompaña la inscripción.
  *  - "CONSENTIMIENTO"→ autorizaciones exigidas por la Ley 172-13.
  *
  * Todos los datos de este formulario son AUTODECLARADOS por la persona que se
@@ -27,6 +28,7 @@ export type OrigenCampo =
   | "JCE_CEDULA"
   | "JCE_PADRON"
   | "CONTACTO"
+  | "SUPERVISOR"
   | "CONSENTIMIENTO";
 
 export type TipoCampo = "text" | "date" | "select" | "email" | "tel" | "checkbox" | "textarea" | "cedula";
@@ -82,8 +84,18 @@ export const OPCIONES = {
 
 export const SECCIONES: readonly Seccion[] = [
   {
+    id: "supervisor",
+    titulo: "1. Datos del supervisor",
+    descripcion: "Supervisor que registra o acompaña esta inscripción.",
+    campos: [
+      { clave: "supervisor_cedula", etiqueta: "Cédula del supervisor", tipo: "cedula", origen: "SUPERVISOR", requerido: true, placeholder: "000-0000000-0" },
+      { clave: "supervisor_nombre", etiqueta: "Nombre completo del supervisor", tipo: "text", origen: "SUPERVISOR", requerido: true, maxLength: 160 },
+      { clave: "supervisor_telefono", etiqueta: "Teléfono del supervisor", tipo: "tel", origen: "SUPERVISOR", requerido: false, placeholder: "809-000-0000" },
+    ],
+  },
+  {
     id: "cedula",
-    titulo: "1. Cédula de Identidad y Electoral",
+    titulo: "2. Cédula de Identidad y Electoral",
     descripcion: "Datos tal como aparecen en su cédula vigente emitida por la JCE.",
     campos: [
       { clave: "cedula", etiqueta: "Número de cédula", tipo: "cedula", origen: "JCE_CEDULA", requerido: true, placeholder: "000-0000000-0", ayuda: "11 dígitos; se valida el dígito verificador." },
@@ -92,7 +104,7 @@ export const SECCIONES: readonly Seccion[] = [
   },
   {
     id: "personales",
-    titulo: "2. Datos personales",
+    titulo: "3. Datos personales",
     descripcion: "Datos de identidad registrados por la JCE.",
     campos: [
       { clave: "nombres", etiqueta: "Nombre(s)", tipo: "text", origen: "JCE_CEDULA", requerido: true, maxLength: 80 },
@@ -109,7 +121,7 @@ export const SECCIONES: readonly Seccion[] = [
   },
   {
     id: "domicilio",
-    titulo: "3. Domicilio",
+    titulo: "4. Domicilio",
     descripcion: "Dirección registrada en la JCE (reverso de la cédula).",
     campos: [
       { clave: "domicilio_provincia", etiqueta: "Provincia", tipo: "select", origen: "JCE_PADRON", requerido: true, opciones: OPCIONES.provincia },
@@ -127,7 +139,7 @@ export const SECCIONES: readonly Seccion[] = [
   },
   {
     id: "electoral",
-    titulo: "4. Lugar de votación",
+    titulo: "5. Lugar de votación",
     descripcion: "Datos del padrón electoral: consúltelos en la cédula o en el servicio oficial de la JCE.",
     campos: [
       { clave: "vota_en_exterior", etiqueta: "Vota en el exterior", tipo: "checkbox", origen: "JCE_PADRON", requerido: false },
@@ -147,7 +159,7 @@ export const SECCIONES: readonly Seccion[] = [
   },
   {
     id: "contacto",
-    titulo: "5. Contacto",
+    titulo: "6. Contacto",
     descripcion: "Datos voluntarios para comunicarnos con usted. No forman parte del registro de la JCE.",
     campos: [
       { clave: "telefono_movil", etiqueta: "Teléfono móvil", tipo: "tel", origen: "CONTACTO", requerido: true, placeholder: "809-000-0000", ayuda: "10 dígitos (809, 829 u 849) o número internacional con +." },
@@ -160,7 +172,7 @@ export const SECCIONES: readonly Seccion[] = [
   },
   {
     id: "consentimientos",
-    titulo: "6. Consentimientos",
+    titulo: "7. Consentimientos",
     descripcion: "Ley 172-13 sobre protección de datos personales.",
     campos: [
       { clave: "consentimiento_tratamiento", etiqueta: "Autorizo el tratamiento de mis datos personales para fines de organización interna, conforme a la Ley 172-13. Puedo solicitar acceso, rectificación o supresión en cualquier momento.", tipo: "checkbox", origen: "CONSENTIMIENTO", requerido: true, ancho: "completo" },

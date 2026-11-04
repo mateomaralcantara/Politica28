@@ -10,6 +10,7 @@ const ETIQUETA_ORIGEN: Record<Campo["origen"], string> = {
   JCE_CEDULA: "JCE · Cédula",
   JCE_PADRON: "JCE · Padrón",
   CONTACTO: "Contacto",
+  SUPERVISOR: "Supervisor",
   CONSENTIMIENTO: "Ley 172-13",
 };
 
@@ -85,7 +86,12 @@ export default function InscripcionForm() {
           type="button"
           className="mt-4 rounded-md bg-green-700 px-4 py-2 text-sm font-medium text-white hover:bg-green-800"
           onClick={() => {
-            setValores(valoresIniciales());
+            // El mismo supervisor suele inscribir a varias personas: se conservan sus datos.
+            setValores((v) => {
+              const nuevos = valoresIniciales();
+              for (const k of Object.keys(nuevos)) if (k.startsWith("supervisor_")) nuevos[k] = v[k];
+              return nuevos;
+            });
             setResultado(null);
             setEstado("idle");
           }}

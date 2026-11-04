@@ -1,7 +1,7 @@
 # Formulario de inscripción — campos de la JCE
 
 El formulario `/inscripcion` incluye los campos de la cédula y del padrón que la
-Junta Central Electoral registra para una persona, más contacto y consentimientos. La fuente única
+Junta Central Electoral registra para una persona, más los datos del supervisor (al inicio), contacto y consentimientos. La fuente única
 es [`lib/inscripcion/campos.ts`](../lib/inscripcion/campos.ts): la interfaz se dibuja a
 partir de ella, el esquema de validación se genera desde ella, y
 `tests/inscripcion.test.ts` comprueba que cada campo tiene su columna en
@@ -15,31 +15,34 @@ separados de las fuentes oficiales.
 
 | # | Sección | Campo (columna) | Origen | Obligatorio | Validación |
 |---|---|---|---|---|---|
-| 1 | Cédula | `cedula` | JCE · Cédula | Sí | 11 dígitos + dígito verificador (Luhn); se guarda sin guiones; única por organización |
-| 2 | Cédula | `fecha_expiracion` | JCE · Cédula | Sí | No vencida |
-| 3 | Personales | `nombres` | JCE · Cédula | Sí | ≤ 80 |
-| 4 | Personales | `primer_apellido` | JCE · Cédula | Sí | ≤ 60 |
-| 5 | Personales | `segundo_apellido` | JCE · Cédula | No | ≤ 60 |
-| 6 | Personales | `sexo` | JCE · Cédula | Sí | M / F |
-| 7 | Personales | `fecha_nacimiento` | JCE · Cédula | Sí | ≥ 18 años |
-| 8 | Personales | `lugar_nacimiento` | JCE · Cédula | Sí | |
-| 9 | Personales | `nacionalidad` | JCE · Cédula | Sí | Valor inicial «Dominicana» |
-| 10 | Personales | `estado_civil` | JCE · Cédula | Sí | Soltero, Casado, Unión libre, Divorciado, Viudo, Separado |
-| 11 | Personales | `tipo_sangre` | JCE · Cédula | No | O±, A±, B±, AB±, No sabe |
-| 12 | Personales | `ocupacion` | JCE · Cédula | Sí | |
-| 13 | Domicilio | `domicilio_provincia` | JCE · Padrón | Sí | Código ONE 01–32 |
-| 14 | Domicilio | `domicilio_municipio` | JCE · Padrón | Sí | |
-| 15–17 | Domicilio | `domicilio_distrito_municipal`, `domicilio_seccion`, `domicilio_paraje` | JCE · Padrón | No | |
-| 18–19 | Domicilio | `domicilio_sector`, `domicilio_calle` | JCE · Padrón | Sí | |
-| 20–23 | Domicilio | `domicilio_numero`, `domicilio_edificio_apto`, `domicilio_referencia`, `domicilio_codigo_postal` | JCE · Padrón | No | Código postal de 5 dígitos |
-| 24 | Votación | `vota_en_exterior` | JCE · Padrón | No | Alterna entre datos nacionales y del exterior |
-| 25–27 | Votación (exterior) | `exterior_circunscripcion`, `exterior_pais`, `exterior_ciudad` | JCE · Padrón | Si vota fuera: circunscripción y país | E1, E2, E3 |
-| 28–31 | Votación (nacional) | `votacion_provincia`, `votacion_municipio`, `votacion_distrito_municipal`, `circunscripcion` | JCE · Padrón | No | |
-| 32–34 | Votación | `recinto_codigo`, `recinto_nombre`, `recinto_direccion` | JCE · Padrón | No | Código alfanumérico ≤ 10 |
-| 35 | Votación | `colegio_electoral` | JCE · Padrón | No | 4 dígitos + letra opcional (`0045A`) |
-| 36 | Votación | `posicion_padron` | JCE · Padrón | No | Número |
-| 37–42 | Contacto | `telefono_movil`*, `telefono_residencial`, `whatsapp`, `email`, `nivel_academico`, `canal_preferido` | Contacto (no JCE) | Solo el móvil | 809/829/849 + 7 dígitos o internacional `+` |
-| 43–45 | Consentimientos | `consentimiento_tratamiento`*, `consentimiento_comunicaciones`, `declaracion_veracidad`* | Ley 172-13 | Ver * | Se guardan la IP y el user-agent del consentimiento |
+| 1 | Supervisor | `supervisor_cedula` | Supervisor | Sí | Cédula válida; distinta de la del inscrito |
+| 2 | Supervisor | `supervisor_nombre` | Supervisor | Sí | ≤ 160 |
+| 3 | Supervisor | `supervisor_telefono` | Supervisor | No | Mismo formato que el teléfono móvil |
+| 4 | Cédula | `cedula` | JCE · Cédula | Sí | 11 dígitos + dígito verificador (Luhn); se guarda sin guiones; única por organización |
+| 5 | Cédula | `fecha_expiracion` | JCE · Cédula | Sí | No vencida |
+| 6 | Personales | `nombres` | JCE · Cédula | Sí | ≤ 80 |
+| 7 | Personales | `primer_apellido` | JCE · Cédula | Sí | ≤ 60 |
+| 8 | Personales | `segundo_apellido` | JCE · Cédula | No | ≤ 60 |
+| 9 | Personales | `sexo` | JCE · Cédula | Sí | M / F |
+| 10 | Personales | `fecha_nacimiento` | JCE · Cédula | Sí | ≥ 18 años |
+| 11 | Personales | `lugar_nacimiento` | JCE · Cédula | Sí | |
+| 12 | Personales | `nacionalidad` | JCE · Cédula | Sí | Valor inicial «Dominicana» |
+| 13 | Personales | `estado_civil` | JCE · Cédula | Sí | Soltero, Casado, Unión libre, Divorciado, Viudo, Separado |
+| 14 | Personales | `tipo_sangre` | JCE · Cédula | No | O±, A±, B±, AB±, No sabe |
+| 15 | Personales | `ocupacion` | JCE · Cédula | Sí | |
+| 16 | Domicilio | `domicilio_provincia` | JCE · Padrón | Sí | Código ONE 01–32 |
+| 17 | Domicilio | `domicilio_municipio` | JCE · Padrón | Sí | |
+| 18–20 | Domicilio | `domicilio_distrito_municipal`, `domicilio_seccion`, `domicilio_paraje` | JCE · Padrón | No | |
+| 21–22 | Domicilio | `domicilio_sector`, `domicilio_calle` | JCE · Padrón | Sí | |
+| 23–26 | Domicilio | `domicilio_numero`, `domicilio_edificio_apto`, `domicilio_referencia`, `domicilio_codigo_postal` | JCE · Padrón | No | Código postal de 5 dígitos |
+| 27 | Votación | `vota_en_exterior` | JCE · Padrón | No | Alterna entre datos nacionales y del exterior |
+| 28–30 | Votación (exterior) | `exterior_circunscripcion`, `exterior_pais`, `exterior_ciudad` | JCE · Padrón | Si vota fuera: circunscripción y país | E1, E2, E3 |
+| 31–34 | Votación (nacional) | `votacion_provincia`, `votacion_municipio`, `votacion_distrito_municipal`, `circunscripcion` | JCE · Padrón | No | |
+| 35–37 | Votación | `recinto_codigo`, `recinto_nombre`, `recinto_direccion` | JCE · Padrón | No | Código alfanumérico ≤ 10 |
+| 38 | Votación | `colegio_electoral` | JCE · Padrón | No | 4 dígitos + letra opcional (`0045A`) |
+| 39 | Votación | `posicion_padron` | JCE · Padrón | No | Número |
+| 40–45 | Contacto | `telefono_movil`*, `telefono_residencial`, `whatsapp`, `email`, `nivel_academico`, `canal_preferido` | Contacto (no JCE) | Solo el móvil | 809/829/849 + 7 dígitos o internacional `+` |
+| 46–48 | Consentimientos | `consentimiento_tratamiento`*, `consentimiento_comunicaciones`, `declaracion_veracidad`* | Ley 172-13 | Ver * | Se guardan la IP y el user-agent del consentimiento |
 
 ## Lo que el formulario NO pide
 
