@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Plataforma de gestión política y organización territorial — República Dominicana.",
 };
 
-export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#4f46e5" };
+export const viewport: Viewport = { width: "device-width", initialScale: 1, themeColor: "#1d4ed8" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

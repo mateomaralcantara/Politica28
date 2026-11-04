@@ -2,28 +2,27 @@
 
 /*
  * POLÍTICA 28 — sistema visual
- * Base blanca y azul; el degradado morado → amarillo es la firma de la marca.
+ * Paleta blanca y azul.
  */
 @theme {
   --font-sans: var(--fuente-sans), ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
-  --color-marca-azul: #2563eb;
-  --color-marca-indigo: #4f46e5;
-  --color-marca-morado: #7c3aed;
-  --color-marca-ambar: #f59e0b;
-  --color-marca-amarillo: #facc15;
+  --color-marca-azul-oscuro: #1e3a8a;
+  --color-marca-azul: #1d4ed8;
+  --color-marca-azul-claro: #3b82f6;
+  --color-marca-celeste: #0ea5e9;
 }
 
 :root {
-  --degradado: linear-gradient(120deg, #4f46e5 0%, #7c3aed 35%, #c026d3 60%, #f59e0b 85%, #facc15 100%);
-  --degradado-vertical: linear-gradient(180deg, #7c3aed 0%, #c026d3 50%, #facc15 100%);
+  --degradado: linear-gradient(120deg, #1e3a8a 0%, #1d4ed8 40%, #2563eb 70%, #0284c7 100%);
+  --degradado-vertical: linear-gradient(180deg, #1d4ed8 0%, #2563eb 50%, #38bdf8 100%);
   color-scheme: light;
 }
 
 body {
   background:
-    radial-gradient(1200px 600px at 100% -10%, rgb(237 233 254 / 0.9), transparent 60%),
+    radial-gradient(1200px 600px at 100% -10%, rgb(224 236 255 / 0.9), transparent 60%),
     radial-gradient(900px 500px at -10% 30%, rgb(219 234 254 / 0.9), transparent 60%),
-    #f8faff;
+    #ffffff;
   color: #0f172a;
 }
 
@@ -44,22 +43,22 @@ body {
   border: 1px solid rgb(255 255 255 / 0.9);
   box-shadow:
     0 1px 0 rgb(255 255 255 / 0.8) inset,
-    0 20px 50px -24px rgb(49 46 129 / 0.25),
+    0 20px 50px -24px rgb(30 58 138 / 0.22),
     0 2px 6px -2px rgb(15 23 42 / 0.06);
   backdrop-filter: blur(16px);
 }
-/* Botón principal: azul → morado con brillo amarillo al pasar el ratón (texto blanco siempre legible). */
+/* Botón principal: degradado azul con texto blanco. */
 @utility btn-primario {
   color: #fff;
-  background-image: linear-gradient(120deg, #2563eb 0%, #4f46e5 45%, #7c3aed 100%);
-  box-shadow: 0 10px 24px -10px rgb(79 70 229 / 0.7), 0 1px 0 rgb(255 255 255 / 0.25) inset;
+  background-image: linear-gradient(120deg, #1d4ed8 0%, #2563eb 60%, #3b82f6 100%);
+  box-shadow: 0 10px 24px -10px rgb(37 99 235 / 0.7), 0 1px 0 rgb(255 255 255 / 0.25) inset;
   transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 14px 30px -10px rgb(124 58 237 / 0.75), 0 0 0 4px rgb(250 204 21 / 0.35);
+    box-shadow: 0 14px 30px -10px rgb(29 78 216 / 0.75), 0 0 0 4px rgb(147 197 253 / 0.45);
   }
   &:active { transform: translateY(0); }
-  &:focus-visible { outline: none; box-shadow: 0 0 0 4px rgb(250 204 21 / 0.6); }
+  &:focus-visible { outline: none; box-shadow: 0 0 0 4px rgb(96 165 250 / 0.6); }
   &:disabled { opacity: 0.6; transform: none; }
 }
 

@@ -7,7 +7,7 @@ export default function PaginaInscripcion() {
   return (
     <div className="mx-auto max-w-5xl">
       <header className="animar-entrada mb-6">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-violet-600">Operación · Inscripción</p>
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-600">Operación · Inscripción</p>
         <h1 className="mt-1 text-3xl font-extrabold tracking-tight text-slate-900">
           Formulario de <span className="texto-gradiente">inscripción</span>
         </h1>

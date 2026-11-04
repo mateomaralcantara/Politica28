@@ -27,19 +27,19 @@ export default async function CentroDeMando() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-8">
-      <section className="animar-entrada relative overflow-hidden rounded-3xl bg-gradiente p-[1px] shadow-2xl shadow-violet-500/20">
-        <div className="relative overflow-hidden rounded-[23px] bg-gradient-to-br from-indigo-700 via-violet-700 to-fuchsia-700 px-6 py-8 text-white sm:px-10">
-          <div aria-hidden className="absolute -right-16 -top-24 h-72 w-72 rounded-full bg-amber-300/40 blur-3xl" />
+      <section className="animar-entrada relative overflow-hidden rounded-3xl bg-gradiente p-[1px] shadow-2xl shadow-blue-500/20">
+        <div className="relative overflow-hidden rounded-[23px] bg-gradient-to-br from-blue-700 via-blue-700 to-sky-700 px-6 py-8 text-white sm:px-10">
+          <div aria-hidden className="absolute -right-16 -top-24 h-72 w-72 rounded-full bg-sky-300/40 blur-3xl" />
           <div aria-hidden className="absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-blue-400/40 blur-3xl" />
           <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">Centro de mando</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-200">Centro de mando</p>
               <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">Organización en tiempo real</h1>
-              <p className="mt-2 max-w-xl text-sm text-indigo-100">
+              <p className="mt-2 max-w-xl text-sm text-blue-100">
                 Cifras agregadas de las inscripciones. Ningún dato personal se muestra en este panel.
               </p>
             </div>
-            <Link href="/inscripcion" className="inline-flex items-center gap-2 self-start rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-indigo-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-amber-300/50 sm:self-auto">
+            <Link href="/inscripcion" className="inline-flex items-center gap-2 self-start rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-blue-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-sky-300/50 sm:self-auto">
               Registrar inscripción <Icono nombre="flecha" className="h-4 w-4" />
             </Link>
           </div>
@@ -51,7 +51,7 @@ export default async function CentroDeMando() {
           <article key={k.titulo} className="panel animar-entrada rounded-2xl p-5" style={{ animationDelay: `${i * 60}ms` }}>
             <div className="flex items-center justify-between">
               <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{k.titulo}</p>
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-blue-50 to-violet-100 text-violet-700">
+              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 text-blue-700">
                 <Icono nombre={k.icono} className="h-4 w-4" />
               </span>
             </div>
@@ -75,7 +75,7 @@ export default async function CentroDeMando() {
                 <div key={d.fecha} className="group flex h-full flex-1 flex-col items-center justify-end gap-1.5">
                   <span className="text-[10px] font-semibold text-slate-600 tabular-nums opacity-0 transition group-hover:opacity-100">{d.total}</span>
                   <div
-                    className="w-full rounded-t-md bg-gradient-to-t from-blue-600 to-violet-500 transition group-hover:to-amber-400"
+                    className="w-full rounded-t-md bg-gradient-to-t from-blue-600 to-blue-500 transition group-hover:to-sky-400"
                     style={{ height: `${Math.max(d.total ? 6 : 2, (d.total / maxDia) * 100)}%`, opacity: d.total ? 1 : 0.25 }}
                     title={`${d.fecha}: ${d.total}`}
                   />
@@ -120,7 +120,7 @@ export default async function CentroDeMando() {
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {GRUPOS.flatMap((g) => g.modulos).map((m) => (
-            <Link key={hrefModulo(m)} href={hrefModulo(m)} className="panel group flex items-start gap-3 rounded-2xl p-4 transition hover:-translate-y-0.5 hover:shadow-violet-300/40">
+            <Link key={hrefModulo(m)} href={hrefModulo(m)} className="panel group flex items-start gap-3 rounded-2xl p-4 transition hover:-translate-y-0.5 hover:shadow-blue-300/40">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-slate-100 text-slate-600 transition group-hover:bg-gradiente group-hover:text-white">
                 <Icono nombre={m.icono} className="h-5 w-5" />
               </span>

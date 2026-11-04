@@ -1,19 +1,23 @@
 import { describe, expect, it } from "vitest";
-import { MODULOS, buscarModulo, hrefModulo } from "@/lib/navegacion";
+import { MODULOS, MODULOS_OCULTOS, buscarModulo, hrefModulo } from "@/lib/navegacion";
 import { agregar } from "@/lib/inscripcion/store";
 
 describe("menú del CRM", () => {
-  it("incluye los 20 módulos de la interfaz principal más Inscripción", () => {
+  it("muestra los módulos de la interfaz principal más Inscripción, sin los de IA", () => {
     const esperados = [
       "Centro de mando", "Territorio nacional", "Estructura organizativa", "Coordinadores", "Supervisores",
       "Promotores", "Multiplicadores", "Actividades", "CRM", "Datos electorales", "Estadísticas",
-      "Análisis predictivo", "Mapas", "Encuestas", "Comunicaciones", "Finanzas", "Agentes IA",
-      "Harness Agéntico", "Informes", "Administración",
+      "Análisis predictivo", "Mapas", "Encuestas", "Comunicaciones", "Finanzas", "Informes", "Administración",
     ];
     const nombres = MODULOS.map((m) => m.nombre);
     expect(nombres).toEqual(expect.arrayContaining([...esperados, "Inscripción"]));
-    expect(MODULOS).toHaveLength(21);
-    expect(new Set(MODULOS.map(hrefModulo)).size).toBe(21);
+    expect(MODULOS).toHaveLength(19);
+    expect(new Set(MODULOS.map(hrefModulo)).size).toBe(19);
+    expect(nombres).not.toContain("Agentes IA");
+    expect(nombres).not.toContain("Harness Agéntico");
+    expect(MODULOS_OCULTOS.map((m) => m.slug).sort()).toEqual(["agentes-ia", "harness"]);
+    expect(buscarModulo("agentes-ia")).toBeUndefined();
+    expect(buscarModulo("harness")).toBeUndefined();
   });
 
   it("solo marca como disponibles los módulos que funcionan", () => {

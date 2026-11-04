@@ -17,12 +17,14 @@ export type Modulo = {
   descripcion: string;
   alcance: readonly string[];
   listo?: boolean;
+  /** Oculto en el menú, el centro de mando y las rutas (se conserva para activarlo más adelante). */
+  oculto?: boolean;
   href?: string;
 };
 
 export type Grupo = { titulo: string; modulos: readonly Modulo[] };
 
-export const GRUPOS: readonly Grupo[] = [
+const TODOS: readonly Grupo[] = [
   {
     titulo: "Operación",
     modulos: [
@@ -55,18 +57,24 @@ export const GRUPOS: readonly Grupo[] = [
     ],
   },
   {
-    titulo: "Gestión e IA",
+    titulo: "Gestión",
     modulos: [
       { slug: "finanzas", nombre: "Finanzas", icono: "billetera", fase: 3, descripcion: "Presupuestos, gastos, aportaciones y cumplimiento normativo.", alcance: ["Presupuesto autorizado", "Ejecución", "Reportes de cumplimiento"] },
-      { slug: "agentes-ia", nombre: "Agentes IA", icono: "chip", fase: 6, descripcion: "Registro de las 30 familias de agentes con permisos y evaluaciones.", alcance: ["Contratos de entrada y salida", "Herramientas autorizadas", "Evaluaciones reproducibles"] },
-      { slug: "harness", nombre: "Harness Agéntico", icono: "engranajes", fase: 6, descripcion: "HARNEX: orquestación supervisada en 10 capas con auditoría y aprobación humana.", alcance: ["Planificación y enrutamiento", "Aprobaciones humanas", "Observabilidad y costes"] },
+      { slug: "agentes-ia", oculto: true, nombre: "Agentes IA", icono: "chip", fase: 6, descripcion: "Registro de las 30 familias de agentes con permisos y evaluaciones.", alcance: ["Contratos de entrada y salida", "Herramientas autorizadas", "Evaluaciones reproducibles"] },
+      { slug: "harness", oculto: true, nombre: "Harness Agéntico", icono: "engranajes", fase: 6, descripcion: "HARNEX: orquestación supervisada en 10 capas con auditoría y aprobación humana.", alcance: ["Planificación y enrutamiento", "Aprobaciones humanas", "Observabilidad y costes"] },
       { slug: "informes", nombre: "Informes", icono: "documento", fase: 5, descripcion: "Reportes exportables a PDF, CSV y Excel según permisos.", alcance: ["Informes por demarcación", "Exportación auditada", "Programación de reportes"] },
       { slug: "administracion", nombre: "Administración", icono: "ajustes", fase: 1, descripcion: "Organizaciones, usuarios, roles, permisos y auditoría.", alcance: ["Usuarios y roles", "MFA", "Registro de auditoría"] },
     ],
   },
 ];
 
+/** Grupos visibles: excluye los módulos marcados como ocultos. */
+export const GRUPOS: readonly Grupo[] = TODOS.map((g) => ({ ...g, modulos: g.modulos.filter((m) => !m.oculto) })).filter(
+  (g) => g.modulos.length > 0,
+);
+
 export const MODULOS: readonly Modulo[] = GRUPOS.flatMap((g) => g.modulos);
+export const MODULOS_OCULTOS: readonly Modulo[] = TODOS.flatMap((g) => g.modulos).filter((m) => m.oculto);
 
 export const hrefModulo = (m: Modulo) => m.href ?? `/${m.slug}`;
 
