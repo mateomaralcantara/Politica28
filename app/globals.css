@@ -70,6 +70,100 @@ body {
   animation: aparecer 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
+/* ---- Vida: movimiento sutil en toda la interfaz ---- */
+@keyframes flotar {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  33% { transform: translate3d(30px, -25px, 0) scale(1.06); }
+  66% { transform: translate3d(-20px, 20px, 0) scale(0.96); }
+}
+@utility animar-flotar {
+  animation: flotar 18s ease-in-out infinite;
+}
+@utility animar-flotar-lento {
+  animation: flotar 26s ease-in-out infinite reverse;
+}
+
+/* Reflejo de luz que recorre una superficie con degradado. */
+@keyframes reflejo {
+  0% { transform: translateX(-120%) skewX(-20deg); }
+  60%, 100% { transform: translateX(260%) skewX(-20deg); }
+}
+@utility con-reflejo {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.35), transparent);
+    animation: reflejo 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+/* Degradado que se desplaza lentamente. */
+@keyframes desplazar {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@utility degradado-vivo {
+  background-size: 220% 220%;
+  animation: desplazar 12s ease-in-out infinite;
+}
+
+@keyframes crecer-y {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@utility animar-crecer-y {
+  transform-origin: bottom;
+  animation: crecer-y 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes crecer-x {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@utility animar-crecer-x {
+  transform-origin: left;
+  animation: crecer-x 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes latido {
+  0% { box-shadow: 0 0 0 0 rgb(16 185 129 / 0.55); }
+  70% { box-shadow: 0 0 0 8px rgb(16 185 129 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(16 185 129 / 0); }
+}
+@utility punto-vivo {
+  animation: latido 2s ease-out infinite;
+}
+
+@keyframes rebote {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@utility hover-rebote {
+  &:hover { animation: rebote 0.5s ease; }
+}
+
+/* Tarjeta interactiva: se eleva y brilla en azul al pasar el ratón. */
+@utility tarjeta-viva {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgb(191 219 254);
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.8) inset, 0 26px 50px -22px rgb(37 99 235 / 0.45);
+  }
+}
+
+@keyframes caer {
+  0% { transform: translate3d(0, -20px, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate3d(var(--dx, 0), 260px, 0) rotate(540deg); opacity: 0; }
+}
+@utility confeti {
+  animation: caer 1.6s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

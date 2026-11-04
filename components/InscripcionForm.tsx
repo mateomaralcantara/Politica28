@@ -29,6 +29,34 @@ function esVisible(campo: Campo, valores: Valores): boolean {
 
 const lleno = (v: string | boolean | undefined) => (typeof v === "boolean" ? v : Boolean(v?.trim()));
 
+function seccionCompleta(campos: readonly Campo[], valores: Valores) {
+  const req = campos.filter((c) => c.requerido && esVisible(c, valores));
+  return req.length > 0 && req.every((c) => lleno(valores[c.clave]));
+}
+
+const COLORES_CONFETI = ["#1d4ed8", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#0ea5e9"];
+
+function Confeti() {
+  return (
+    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-72 overflow-hidden">
+      {Array.from({ length: 36 }, (_, i) => (
+        <span
+          key={i}
+          className="confeti absolute top-0 block rounded-sm"
+          style={{
+            left: `${(i * 37) % 100}%`,
+            width: i % 3 ? 8 : 6,
+            height: i % 3 ? 12 : 6,
+            background: COLORES_CONFETI[i % COLORES_CONFETI.length],
+            animationDelay: `${(i % 9) * 60}ms`,
+            ["--dx" as string]: `${((i * 53) % 120) - 60}px`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 /** Separa "1. Datos del supervisor" en número y título. */
 function partirTitulo(t: string) {
   const m = t.match(/^(\d+)\.\s*(.*)$/);
@@ -90,6 +118,7 @@ export default function InscripcionForm() {
       <div role="status" className="panel animar-entrada relative overflow-hidden rounded-3xl p-8 text-center">
         <div aria-hidden className="absolute inset-x-0 top-0 h-1.5 bg-gradiente" />
         <div aria-hidden className="absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-sky-300/30 blur-3xl" />
+        <Confeti />
         <span className="relative mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-gradiente text-white shadow-xl shadow-blue-500/30">
           <Icono nombre="check" className="h-8 w-8" />
         </span>
@@ -134,20 +163,26 @@ export default function InscripcionForm() {
           <p className="text-xs font-extrabold tabular-nums texto-gradiente">{progreso} %</p>
         </div>
         <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-valuenow={progreso} aria-valuemin={0} aria-valuemax={100} aria-label="Progreso del formulario">
-          <div className="h-full rounded-full bg-gradiente transition-[width] duration-500" style={{ width: `${progreso}%` }} />
+          <div className="con-reflejo h-full rounded-full bg-gradiente transition-[width] duration-500" style={{ width: `${progreso}%` }} />
         </div>
         <nav aria-label="Secciones del formulario" className="-mx-1 mt-3 flex gap-1.5 overflow-x-auto pb-1">
           {SECCIONES.map((s) => {
             const { n, texto } = partirTitulo(s.titulo);
             const conError = s.campos.some((c) => errores[c.clave]);
+            const completa = seccionCompleta(s.campos, valores);
             return (
               <a
                 key={s.id}
                 href={`#sec-${s.id}`}
-                className={`shrink-0 rounded-full border px-3 py-1 text-[11px] font-semibold transition ${
-                  conError ? "border-rose-200 bg-rose-50 text-rose-700" : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-700"
+                className={`inline-flex shrink-0 items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-semibold transition duration-300 hover:-translate-y-0.5 ${
+                  conError
+                    ? "border-rose-200 bg-rose-50 text-rose-700"
+                    : completa
+                      ? "border-blue-600 bg-blue-600 text-white shadow-md shadow-blue-500/30"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-blue-300 hover:text-blue-700"
                 }`}
               >
+                {completa && !conError && <Icono nombre="check" className="h-3 w-3" />}
                 {n}. {texto}
               </a>
             );
@@ -165,11 +200,14 @@ export default function InscripcionForm() {
 
         {SECCIONES.map((seccion) => {
           const { n, texto } = partirTitulo(seccion.titulo);
+          const completa = seccionCompleta(seccion.campos, valores);
           return (
             <fieldset key={seccion.id} id={`sec-${seccion.id}`} className="scroll-mt-48 border-b border-slate-100 py-8 last:border-b-0">
               <legend className="contents">
                 <span className="flex items-center gap-3">
-                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-gradiente text-sm font-extrabold text-white shadow-lg shadow-blue-500/25">{n}</span>
+                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-sm font-extrabold text-white shadow-lg transition duration-500 ${completa ? "scale-110 bg-blue-600 shadow-blue-600/40 ring-4 ring-blue-100" : "bg-gradiente shadow-blue-500/25"}`}>
+                    {completa ? <Icono nombre="check" className="h-5 w-5" /> : n}
+                  </span>
                   <span className="text-lg font-bold tracking-tight text-slate-900">{texto}</span>
                 </span>
               </legend>

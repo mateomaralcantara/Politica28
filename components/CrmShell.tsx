@@ -24,9 +24,9 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
     <div className="min-h-screen">
       {/* Fondo decorativo */}
       <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute -top-40 right-[-10%] h-[520px] w-[520px] rounded-full bg-blue-400/25 blur-3xl" />
-        <div className="absolute top-1/3 -left-40 h-[420px] w-[420px] rounded-full bg-blue-400/20 blur-3xl" />
-        <div className="absolute bottom-[-10%] right-1/4 h-[360px] w-[360px] rounded-full bg-sky-300/25 blur-3xl" />
+        <div className="animar-flotar absolute -top-40 right-[-10%] h-[520px] w-[520px] rounded-full bg-blue-400/25 blur-3xl" />
+        <div className="animar-flotar-lento absolute top-1/3 -left-40 h-[420px] w-[420px] rounded-full bg-blue-400/20 blur-3xl" />
+        <div className="animar-flotar absolute bottom-[-10%] right-1/4 h-[360px] w-[360px] rounded-full bg-sky-300/25 blur-3xl" />
       </div>
 
       {abierto && (
@@ -37,7 +37,7 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
         className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-white/60 bg-white/80 shadow-[8px_0_40px_-20px_rgba(76,29,149,0.35)] backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${abierto ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex items-center gap-3 px-5 pt-6 pb-4">
-          <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradiente text-lg font-black text-white shadow-lg shadow-blue-500/30">
+          <div className="con-reflejo degradado-vivo grid h-11 w-11 place-items-center rounded-2xl bg-gradiente text-lg font-black text-white shadow-lg shadow-blue-500/30">
             28
           </div>
           <div className="leading-tight">
@@ -78,20 +78,16 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
                         <Link
                           href={href}
                           aria-current={on ? "page" : undefined}
-                          className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 text-[13.5px] font-medium transition ${
+                          className={`group relative flex items-center gap-3 rounded-xl px-3 py-2 text-[13.5px] font-medium transition duration-200 hover:translate-x-0.5 ${
                             on ? "bg-gradient-to-r from-blue-600/10 via-blue-600/10 to-sky-400/10 text-slate-900" : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900"
                           }`}
                         >
                           {on && <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-gradiente-vertical" />}
-                          <span className={`grid h-8 w-8 place-items-center rounded-lg transition ${on ? "bg-gradiente text-white shadow-md shadow-blue-500/30" : "bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600"}`}>
+                          <span className={`hover-rebote grid h-8 w-8 place-items-center rounded-lg transition duration-300 group-hover:scale-110 ${on ? "bg-gradiente text-white shadow-md shadow-blue-500/30" : "bg-slate-100 text-slate-500 group-hover:bg-white group-hover:text-blue-600"}`}>
                             <Icono nombre={m.icono} className="h-4 w-4" />
                           </span>
                           <span className="truncate">{m.nombre}</span>
-                          {m.listo ? (
-                            <span className="ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500" title="Disponible" />
-                          ) : (
-                            <span className="ml-auto text-[10px] font-semibold text-slate-400">F{m.fase}</span>
-                          )}
+                          {m.listo && <span className="punto-vivo ml-auto h-1.5 w-1.5 rounded-full bg-emerald-500" title="Disponible" />}
                         </Link>
                       </li>
                     );
@@ -123,6 +119,9 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
               <p className="truncate text-sm font-bold text-slate-900">{actual?.nombre ?? "Módulo"}</p>
             </div>
             <div className="ml-auto flex items-center gap-2">
+              <span className="hidden items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 md:inline-flex">
+                <span className="punto-vivo h-1.5 w-1.5 rounded-full bg-emerald-500" /> En línea
+              </span>
               {modoDemo && (
                 <span className="hidden rounded-full border border-sky-300 bg-sky-50 px-3 py-1 text-[11px] font-semibold text-sky-800 sm:inline" title="Sin base de datos configurada: los registros se guardan en memoria.">
                   Modo demostración
@@ -135,10 +134,10 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
               )}
             </div>
           </div>
-          <div className="h-[2px] bg-gradiente" />
+          <div className="degradado-vivo h-[3px] bg-gradiente" />
         </header>
 
-        <main className="px-4 py-8 sm:px-8">{children}</main>
+        <main key={pathname} className="animar-entrada px-4 py-8 sm:px-8">{children}</main>
       </div>
     </div>
   );
