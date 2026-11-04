@@ -5,7 +5,10 @@ Plataforma de gestión política, inteligencia electoral y organización territo
 inscripción**, que recoge los campos de la cédula y del padrón que registra la
 Junta Central Electoral, más contacto y consentimientos de la Ley 172-13.
 
-- Formulario: `app/inscripcion` (se dibuja desde `lib/inscripcion/campos.ts`)
+- CRM: barra lateral con los 20 módulos (`lib/navegacion.ts`), centro de mando en `/` con cifras agregadas
+  y una ficha por módulo pendiente (`app/(crm)/[modulo]`)
+- Formulario: `/inscripcion`, un solo panel (`components/InscripcionForm.tsx`, campos en `lib/inscripcion/campos.ts`)
+- Estilo: blanco y azul con el degradado morado → amarillo como firma (`app/globals.css`)
 - API: `POST /api/inscripciones` (validación zod; 201 / 409 cédula duplicada / 422 errores por campo)
 - Base de datos: `supabase/migrations/0001_inscripciones.sql` (esquema `crm`, RLS por organización)
 - Matriz de campos: [`docs/INSCRIPCION-CAMPOS-JCE.md`](docs/INSCRIPCION-CAMPOS-JCE.md)
@@ -14,7 +17,7 @@ Junta Central Electoral, más contacto y consentimientos de la Ley 172-13.
 
 ```bash
 npm install
-npm run dev        # http://localhost:3000/inscripcion
+npm run dev        # http://localhost:3000 (CRM) y /inscripcion
 npm run validate   # typecheck + tests + build
 ```
 
