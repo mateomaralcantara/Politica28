@@ -7,12 +7,12 @@ describe("menú del CRM", () => {
     const esperados = [
       "Centro de mando", "Territorio nacional", "Estructura organizativa", "Coordinadores", "Supervisores",
       "Promotores", "Multiplicadores", "Actividades", "CRM", "Datos electorales", "Estadísticas",
-      "Análisis predictivo", "Mapas", "Encuestas", "Comunicaciones", "Finanzas", "Informes", "Administración",
+      "Análisis predictivo", "Mapas", "Encuestas", "Comunicaciones", "Educación", "Finanzas", "Informes", "Administración",
     ];
     const nombres = MODULOS.map((m) => m.nombre);
     expect(nombres).toEqual(expect.arrayContaining([...esperados, "Inscripción"]));
-    expect(MODULOS).toHaveLength(19);
-    expect(new Set(MODULOS.map(hrefModulo)).size).toBe(19);
+    expect(MODULOS).toHaveLength(20);
+    expect(new Set(MODULOS.map(hrefModulo)).size).toBe(20);
     expect(nombres).not.toContain("Agentes IA");
     expect(nombres).not.toContain("Harness Agéntico");
     expect(MODULOS_OCULTOS.map((m) => m.slug).sort()).toEqual(["agentes-ia", "harness"]);
@@ -21,7 +21,7 @@ describe("menú del CRM", () => {
   });
 
   it("solo marca como disponibles los módulos que funcionan", () => {
-    expect(MODULOS.filter((m) => m.listo).map(hrefModulo).sort()).toEqual(["/", "/comunicaciones", "/inscripcion"]);
+    expect(MODULOS.filter((m) => m.listo).map(hrefModulo).sort()).toEqual(["/", "/comunicaciones", "/educacion", "/inscripcion"]);
     expect(buscarModulo("mapas")?.fase).toBe(5);
     expect(buscarModulo("inscripcion")).toBeUndefined();
   });

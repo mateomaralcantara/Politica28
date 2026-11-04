@@ -7,7 +7,7 @@
 export type IconoNombre =
   | "mando" | "mapa" | "jerarquia" | "estrella" | "ojo" | "megafono" | "red" | "calendario"
   | "contactos" | "urna" | "barras" | "tendencia" | "capas" | "encuesta" | "mensaje"
-  | "billetera" | "chip" | "engranajes" | "documento" | "ajustes" | "formulario";
+  | "billetera" | "chip" | "engranajes" | "documento" | "ajustes" | "formulario" | "educacion";
 
 export type Modulo = {
   slug: string;
@@ -32,6 +32,7 @@ const TODOS: readonly Grupo[] = [
       { slug: "inscripcion", href: "/inscripcion", nombre: "Inscripción", icono: "formulario", fase: 3, listo: true, descripcion: "Registro voluntario con los datos de la cédula y del padrón de la JCE.", alcance: ["Formulario validado", "Datos del supervisor", "Consentimientos Ley 172-13"] },
       { slug: "actividades", nombre: "Actividades", icono: "calendario", fase: 3, descripcion: "Eventos, reuniones, calendarios, asistencia e incidencias.", alcance: ["Calendario de actividades", "Registro de asistencia", "Incidencias y reportes"] },
       { slug: "crm", nombre: "CRM", icono: "contactos", fase: 3, descripcion: "Contactos voluntarios, consentimientos e historial de interacciones autorizadas.", alcance: ["Fichas de contacto", "Preferencias de comunicación", "Historial de actividades"] },
+      { slug: "educacion", href: "/educacion", nombre: "Educación", icono: "educacion", fase: 3, listo: true, descripcion: "Escuela de formación: cursos y talleres, participantes, asistencia y certificados.", alcance: ["Programa de formación", "Asistencia", "Certificados"] },
       { slug: "comunicaciones", href: "/comunicaciones", nombre: "Comunicaciones", icono: "mensaje", fase: 3, listo: true, descripcion: "Línea comunicacional, plan de medios y red nacional de comunicadores por provincia.", alcance: ["Línea comunicacional", "Plan de medios", "Red de comunicadores"] },
     ],
   },

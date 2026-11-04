@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Icono from "@/components/Icono";
-import FormularioRegistro, { type CampoUI } from "@/components/comunicaciones/FormularioRegistro";
+import FormularioRegistro, { type CampoUI } from "@/components/FormularioRegistro";
 import { OPC, etiqueta, type Registro } from "@/lib/comunicaciones/schema";
 import { PROVINCIAS } from "@/lib/territorio/provincias";
 

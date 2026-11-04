@@ -127,17 +127,12 @@ export const COLECCIONES = {
 export type Coleccion = keyof typeof COLECCIONES;
 export const esColeccion = (v: string): v is Coleccion => v in COLECCIONES;
 
-export type Registro = Record<string, unknown> & { id: string; creado_en: string };
+export type { Registro } from "@/lib/datos/almacen";
+import { enmascararContacto, type Registro } from "@/lib/datos/almacen";
 
 /** Datos de contacto enmascarados para listados (hasta que exista control de acceso por rol). */
 export function enmascararComunicador(r: Registro): Registro {
-  const tel = typeof r.telefono === "string" ? r.telefono : "";
-  const email = typeof r.email === "string" ? r.email : "";
-  return {
-    ...r,
-    telefono: tel ? `•••-•••-${tel.slice(-4)}` : undefined,
-    email: email ? email.replace(/^(.).*(@.*)$/, "$1•••$2") : undefined,
-  };
+  return enmascararContacto(r);
 }
 
 export function erroresPorCampo(error: z.ZodError): Record<string, string> {

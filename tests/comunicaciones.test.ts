@@ -2,7 +2,8 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { COLECCIONES, enmascararComunicador, erroresPorCampo, esquemaComunicador, esquemaLinea, esquemaMedio } from "@/lib/comunicaciones/schema";
-import { MemoriaComunicaciones, SupabaseComunicaciones } from "@/lib/comunicaciones/store";
+import { MemoriaComunicaciones } from "@/lib/comunicaciones/store";
+import { AlmacenSupabase } from "@/lib/datos/almacen";
 
 describe("línea comunicacional", () => {
   it("acepta un mensaje válido y valida la vigencia", () => {
@@ -50,7 +51,7 @@ describe("red de comunicadores", () => {
 
 describe("almacenes y base de datos", () => {
   it("memoria crea, lista y elimina", async () => {
-    const a = new MemoriaComunicaciones();
+    const a = new MemoriaComunicaciones<"lineas">();
     const r = await a.crear("lineas", { titulo: "A", extra: undefined });
     expect(Object.keys(r)).not.toContain("extra");
     expect(await a.listar("lineas")).toHaveLength(1);
@@ -64,7 +65,8 @@ describe("almacenes y base de datos", () => {
       llamadas.push(url);
       return new Response("[]", { status: 200 });
     }) as unknown as typeof fetch;
-    await new SupabaseComunicaciones("https://x.supabase.co", "k", "org-1", fetcher).listar("comunicadores");
+    const tablas = Object.fromEntries(Object.entries(COLECCIONES).map(([k, v]) => [k, v.tabla])) as Record<keyof typeof COLECCIONES, string>;
+    await new AlmacenSupabase(tablas, "https://x.supabase.co", "k", "org-1", fetcher).listar("comunicadores");
     expect(llamadas[0]).toBe("https://x.supabase.co/rest/v1/comunicadores?organization_id=eq.org-1&order=creado_en.desc");
   });
 

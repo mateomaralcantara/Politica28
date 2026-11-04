@@ -2,12 +2,12 @@
 
 import { useState, type FormEvent } from "react";
 import Icono from "@/components/Icono";
-import type { Opcion } from "@/lib/comunicaciones/schema";
+export type Opcion = { valor: string; etiqueta: string };
 
 export type CampoUI = {
   clave: string;
   etiqueta: string;
-  tipo: "text" | "textarea" | "select" | "date" | "tel" | "email" | "number" | "checkbox";
+  tipo: "text" | "textarea" | "select" | "date" | "time" | "tel" | "email" | "number" | "checkbox";
   requerido?: boolean;
   opciones?: readonly Opcion[];
   placeholder?: string;
@@ -32,6 +32,7 @@ export default function FormularioRegistro<T>({
   endpoint,
   boton,
   valoresFijos = {},
+  extra = {},
   onCreado,
 }: {
   titulo: string;
@@ -39,6 +40,8 @@ export default function FormularioRegistro<T>({
   endpoint: string;
   boton: string;
   valoresFijos?: Record<string, string>;
+  /** Datos que se envían siempre pero no se muestran (p. ej. el curso seleccionado). */
+  extra?: Record<string, unknown>;
   onCreado: (registro: T) => void;
 }) {
   const [valores, setValores] = useState(() => iniciales(campos, valoresFijos));
@@ -59,7 +62,7 @@ export default function FormularioRegistro<T>({
   async function enviar(e: FormEvent) {
     e.preventDefault();
     setEnviando(true);
-    const cuerpo = Object.fromEntries(visibles.map((c) => [c.clave, valores[c.clave]]));
+    const cuerpo = { ...Object.fromEntries(visibles.map((c) => [c.clave, valores[c.clave]])), ...extra };
     try {
       const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cuerpo) });
       const json = await res.json();
@@ -88,7 +91,13 @@ export default function FormularioRegistro<T>({
           </span>
         )}
       </div>
-      {errores._formulario && <p role="alert" className="mb-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-700">{errores._formulario}</p>}
+      {(() => {
+        // Errores que no corresponden a un campo visible (p. ej. «cupo completo») se muestran como aviso general.
+        const generales = Object.entries(errores)
+          .filter(([k]) => !visibles.some((c) => c.clave === k))
+          .map(([, m]) => m);
+        return generales.length > 0 ? <p role="alert" className="mb-3 rounded-xl bg-rose-50 px-3 py-2 text-sm font-medium text-rose-700">{generales.join(" ")}</p> : null;
+      })()}
       <div className="grid grid-cols-1 gap-x-4 gap-y-3.5 sm:grid-cols-2">
         {visibles.map((c) => {
           const err = errores[c.clave];

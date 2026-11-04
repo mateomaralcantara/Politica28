@@ -22,6 +22,7 @@ const TRAZOS: Record<IconoNombre | "menu" | "cerrar" | "buscar" | "mas" | "flech
   documento: ["M14 2H6v20h12V6z", "M14 2v4h4", "M9 13h6", "M9 17h6"],
   ajustes: ["M4 21v-7", "M4 10V3", "M12 21v-9", "M12 8V3", "M20 21v-5", "M20 12V3", "M1 14h6", "M9 8h6", "M17 16h6"],
   formulario: ["M5 3h14v18H5z", "M9 7h6", "M9 11h6", "M9 15h3"],
+  educacion: ["M22 9 12 4 2 9l10 5 10-5z", "M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5", "M22 9v6"],
   menu: ["M3 6h18", "M3 12h18", "M3 18h18"],
   cerrar: ["M6 6l12 12", "M18 6 6 18"],
   buscar: ["M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z", "m21 21-4.3-4.3"],
