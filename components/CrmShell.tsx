@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Icono from "@/components/Icono";
+import Marca from "@/components/Marca";
 import { GRUPOS, MODULOS, hrefModulo } from "@/lib/navegacion";
 
 function activo(pathname: string, href: string) {
@@ -34,15 +35,15 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-white/60 bg-white/80 shadow-[8px_0_40px_-20px_rgba(76,29,149,0.35)] backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${abierto ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-white/60 bg-white/80 shadow-[8px_0_40px_-20px_rgba(30,58,138,0.3)] backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${abierto ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex items-center gap-3 px-5 pt-6 pb-4">
-          <div className="con-reflejo degradado-vivo grid h-11 w-11 place-items-center rounded-2xl bg-gradiente text-lg font-black text-white shadow-lg shadow-blue-500/30">
+          <div className="con-reflejo degradado-vivo font-marca grid h-11 w-11 place-items-center rounded-2xl bg-gradiente text-[17px] font-black tracking-tighter text-white shadow-lg shadow-blue-500/30">
             28
           </div>
-          <div className="leading-tight">
-            <p className="text-[15px] font-extrabold tracking-tight text-slate-900">POLÍTICA 28</p>
-            <p className="text-[11px] font-medium text-slate-500">Gestión territorial · RD</p>
+          <div>
+            <p><Marca /></p>
+            <p className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-400">Gestión territorial · RD</p>
           </div>
           <button className="ml-auto rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden" aria-label="Cerrar menú" onClick={() => setAbierto(false)}>
             <Icono nombre="cerrar" />
@@ -115,7 +116,7 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
               <Icono nombre="menu" />
             </button>
             <div className="min-w-0">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400">POLÍTICA 28</p>
+              <p className="opacity-70"><Marca tamano="sm" /></p>
               <p className="truncate text-sm font-bold text-slate-900">{actual?.nombre ?? "Módulo"}</p>
             </div>
             <div className="ml-auto flex items-center gap-2">

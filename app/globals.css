@@ -6,6 +6,7 @@
  */
 @theme {
   --font-sans: var(--fuente-sans), ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-marca: var(--fuente-marca), var(--fuente-sans), ui-sans-serif, system-ui, sans-serif;
   --color-marca-azul-oscuro: #1e3a8a;
   --color-marca-azul: #1d4ed8;
   --color-marca-azul-claro: #3b82f6;
