@@ -7,6 +7,8 @@ Junta Central Electoral, más contacto y consentimientos de la Ley 172-13.
 
 - CRM: barra lateral con los módulos (`lib/navegacion.ts`), centro de mando en `/` con cifras agregadas
   y una ficha por módulo pendiente (`app/(crm)/[modulo]`)
+- Comunicaciones: `/comunicaciones` con línea comunicacional, plan de medios y red nacional de comunicadores
+  por provincia (`components/comunicaciones`, `lib/comunicaciones`, migración `0002_comunicaciones.sql`)
 - Formulario: `/inscripcion`, un solo panel (`components/InscripcionForm.tsx`, campos en `lib/inscripcion/campos.ts`)
 - Estilo: blanco y azul (`app/globals.css`)
 - Identidad al compartir: ícono, imagen de vista previa para WhatsApp/Facebook/X y manifiesto PWA

@@ -21,7 +21,7 @@ describe("menú del CRM", () => {
   });
 
   it("solo marca como disponibles los módulos que funcionan", () => {
-    expect(MODULOS.filter((m) => m.listo).map(hrefModulo).sort()).toEqual(["/", "/inscripcion"]);
+    expect(MODULOS.filter((m) => m.listo).map(hrefModulo).sort()).toEqual(["/", "/comunicaciones", "/inscripcion"]);
     expect(buscarModulo("mapas")?.fase).toBe(5);
     expect(buscarModulo("inscripcion")).toBeUndefined();
   });

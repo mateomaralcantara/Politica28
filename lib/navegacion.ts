@@ -32,7 +32,7 @@ const TODOS: readonly Grupo[] = [
       { slug: "inscripcion", href: "/inscripcion", nombre: "Inscripción", icono: "formulario", fase: 3, listo: true, descripcion: "Registro voluntario con los datos de la cédula y del padrón de la JCE.", alcance: ["Formulario validado", "Datos del supervisor", "Consentimientos Ley 172-13"] },
       { slug: "actividades", nombre: "Actividades", icono: "calendario", fase: 3, descripcion: "Eventos, reuniones, calendarios, asistencia e incidencias.", alcance: ["Calendario de actividades", "Registro de asistencia", "Incidencias y reportes"] },
       { slug: "crm", nombre: "CRM", icono: "contactos", fase: 3, descripcion: "Contactos voluntarios, consentimientos e historial de interacciones autorizadas.", alcance: ["Fichas de contacto", "Preferencias de comunicación", "Historial de actividades"] },
-      { slug: "comunicaciones", nombre: "Comunicaciones", icono: "mensaje", fase: 3, descripcion: "Centro omnicanal con consentimiento: correo, SMS, WhatsApp Business, llamadas y avisos.", alcance: ["Plantillas aprobadas", "Exclusión voluntaria", "Historial de entregas"] },
+      { slug: "comunicaciones", href: "/comunicaciones", nombre: "Comunicaciones", icono: "mensaje", fase: 3, listo: true, descripcion: "Línea comunicacional, plan de medios y red nacional de comunicadores por provincia.", alcance: ["Línea comunicacional", "Plan de medios", "Red de comunicadores"] },
     ],
   },
   {
