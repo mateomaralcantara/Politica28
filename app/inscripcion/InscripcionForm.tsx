@@ -8,10 +8,8 @@ type Valores = Record<string, string | boolean>;
 
 const ETIQUETA_ORIGEN: Record<Campo["origen"], string> = {
   JCE_CEDULA: "JCE · Cédula",
-  JCE_REGISTRO_CIVIL: "JCE · Registro Civil",
   JCE_PADRON: "JCE · Padrón",
   CONTACTO: "Contacto",
-  ORGANIZACION: "Organización",
   CONSENTIMIENTO: "Ley 172-13",
 };
 
@@ -78,8 +76,7 @@ export default function InscripcionForm() {
       <div role="status" className="rounded-lg border border-green-300 bg-green-50 p-6 text-green-900 dark:border-green-800 dark:bg-green-950 dark:text-green-100">
         <h2 className="text-lg font-semibold">Inscripción recibida</h2>
         <p className="mt-2 text-sm">
-          Número de solicitud: <code className="font-mono">{resultado.id}</code>. Su postulación queda pendiente de
-          aprobación por la coordinación de su demarcación.
+          Número de solicitud: <code className="font-mono">{resultado.id}</code>. Gracias por inscribirse.
         </p>
         {resultado.modo === "demo" && (
           <p className="mt-2 text-xs">Modo demostración: el registro se guardó en memoria y no es persistente.</p>

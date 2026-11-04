@@ -26,21 +26,16 @@ const valido = () => ({
   domicilio_sector: "Los Jardines",
   domicilio_calle: "Calle 1",
   telefono_movil: "809-555-1234",
-  cargo_solicitado: "PROMOTOR",
-  jurisdiccion_nivel: "MUNICIPIO",
-  jurisdiccion_provincia: "25",
-  jurisdiccion_municipio: "Santiago de los Caballeros",
   consentimiento_tratamiento: true,
   declaracion_veracidad: true,
 });
 
 describe("catálogo de campos JCE", () => {
-  it("incluye todos los campos de la cédula, registro civil y padrón", () => {
+  it("incluye los campos de la cédula y del padrón", () => {
     const jce = [
-      "cedula", "fecha_expedicion", "fecha_expiracion", "cedula_anterior",
+      "cedula", "fecha_expiracion",
       "nombres", "primer_apellido", "segundo_apellido", "sexo", "fecha_nacimiento", "lugar_nacimiento",
       "nacionalidad", "estado_civil", "tipo_sangre", "ocupacion",
-      "acta_oficialia", "acta_libro", "acta_folio", "acta_numero", "acta_anio", "nombre_padre", "nombre_madre",
       "domicilio_provincia", "domicilio_municipio", "domicilio_distrito_municipal", "domicilio_seccion",
       "domicilio_paraje", "domicilio_sector", "domicilio_calle", "domicilio_numero",
       "vota_en_exterior", "exterior_circunscripcion", "exterior_pais", "votacion_provincia", "votacion_municipio",
@@ -54,7 +49,11 @@ describe("catálogo de campos JCE", () => {
   it("no repite claves y cada select tiene opciones", () => {
     expect(new Set(CLAVES_CAMPOS).size).toBe(CLAVES_CAMPOS.length);
     for (const c of CAMPOS) if (c.tipo === "select") expect(c.opciones?.length, c.clave).toBeGreaterThan(0);
-    expect(SECCIONES).toHaveLength(8);
+    expect(SECCIONES).toHaveLength(6);
+    const quitados = ["fecha_expedicion", "cedula_anterior", "acta_oficialia", "acta_libro", "acta_folio", "acta_numero",
+      "acta_anio", "nombre_padre", "nombre_madre", "cargo_solicitado", "jurisdiccion_nivel", "jurisdiccion_provincia",
+      "jurisdiccion_municipio", "jurisdiccion_distrito_municipal", "referido_por_cedula", "observaciones"];
+    for (const k of quitados) expect(CLAVES_CAMPOS, k).not.toContain(k);
   });
 
   it("cada campo del formulario tiene su columna en la migración SQL", () => {
@@ -63,9 +62,8 @@ describe("catálogo de campos JCE", () => {
     for (const k of CLAVES_CAMPOS) expect(tabla, k).toMatch(new RegExp(`^\\s+${k}\\s`, "m"));
   });
 
-  it("ofrece las 32 demarcaciones provinciales y los 5 cargos", () => {
+  it("ofrece las 32 demarcaciones provinciales", () => {
     expect(CAMPOS.find((c) => c.clave === "domicilio_provincia")!.opciones).toHaveLength(32);
-    expect(CAMPOS.find((c) => c.clave === "cargo_solicitado")!.opciones).toHaveLength(5);
   });
 });
 
@@ -125,13 +123,6 @@ describe("esquema de inscripción", () => {
     if (!r.success) return;
     expect(r.data.votacion_provincia).toBeUndefined();
     expect(r.data.circunscripcion).toBeUndefined();
-  });
-
-  it("exige distrito municipal cuando la jurisdicción es distrital", () => {
-    const r = esquema.safeParse({ ...valido(), jurisdiccion_nivel: "DISTRITO_MUNICIPAL" });
-    expect(r.success).toBe(false);
-    if (r.success) return;
-    expect(erroresPorCampo(r.error).jurisdiccion_distrito_municipal).toBeDefined();
   });
 
   it("rechaza campos desconocidos y consentimientos no aceptados", () => {

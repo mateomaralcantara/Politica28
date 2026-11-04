@@ -94,16 +94,6 @@ export function crearEsquemaInscripcion(hoy: () => Date = () => new Date()) {
       if (typeof d.fecha_expiracion === "string" && d.fecha_expiracion < hoyISO) {
         err("fecha_expiracion", "La cédula está vencida; renuévela en la JCE antes de inscribirse.");
       }
-      if (typeof d.fecha_expedicion === "string") {
-        if (d.fecha_expedicion > hoyISO) err("fecha_expedicion", "La fecha de expedición no puede ser futura.");
-        if (typeof d.fecha_expiracion === "string" && d.fecha_expedicion >= d.fecha_expiracion) {
-          err("fecha_expiracion", "Debe ser posterior a la fecha de expedición.");
-        }
-      }
-      if (typeof d.acta_anio === "string") {
-        const anio = Number(d.acta_anio);
-        if (!/^\d{4}$/.test(d.acta_anio) || anio < 1900 || anio > hoyDate.getUTCFullYear()) err("acta_anio", "Año inválido.");
-      }
       if (typeof d.domicilio_codigo_postal === "string" && !/^\d{5}$/.test(d.domicilio_codigo_postal)) {
         err("domicilio_codigo_postal", "El código postal tiene 5 dígitos.");
       }
@@ -122,15 +112,6 @@ export function crearEsquemaInscripcion(hoy: () => Date = () => new Date()) {
         if (!d.exterior_pais) err("exterior_pais", "Indique el país.");
       }
 
-      if (d.jurisdiccion_nivel === "MUNICIPIO" || d.jurisdiccion_nivel === "DISTRITO_MUNICIPAL") {
-        if (!d.jurisdiccion_municipio) err("jurisdiccion_municipio", "Indique el municipio.");
-      }
-      if (d.jurisdiccion_nivel === "DISTRITO_MUNICIPAL" && !d.jurisdiccion_distrito_municipal) {
-        err("jurisdiccion_distrito_municipal", "Indique el distrito municipal.");
-      }
-      if (d.referido_por_cedula && d.referido_por_cedula === d.cedula) {
-        err("referido_por_cedula", "No puede referirse a sí mismo.");
-      }
       if (d.consentimiento_comunicaciones && !d.telefono_movil && !d.email) {
         err("consentimiento_comunicaciones", "Indique al menos un medio de contacto.");
       }
@@ -141,8 +122,6 @@ export function crearEsquemaInscripcion(hoy: () => Date = () => new Date()) {
       const nacionales = ["votacion_provincia", "votacion_municipio", "votacion_distrito_municipal", "circunscripcion"];
       const exterior = ["exterior_circunscripcion", "exterior_pais", "exterior_ciudad"];
       for (const k of d.vota_en_exterior ? nacionales : exterior) delete limpio[k];
-      if (d.jurisdiccion_nivel !== "DISTRITO_MUNICIPAL") delete limpio.jurisdiccion_distrito_municipal;
-      if (d.jurisdiccion_nivel === "PROVINCIA") delete limpio.jurisdiccion_municipio;
       return limpio;
     });
 }

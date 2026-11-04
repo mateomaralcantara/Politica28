@@ -39,13 +39,11 @@ create table if not exists crm.inscripciones (
   id                              uuid primary key default gen_random_uuid(),
   organization_id                 uuid not null references core.organizations(id) on delete restrict,
   origen_datos                    text not null default 'AUTODECLARADO' check (origen_datos = 'AUTODECLARADO'),
-  estado_postulacion              text not null default 'PENDIENTE' check (estado_postulacion in ('PENDIENTE','APROBADA','RECHAZADA','RETIRADA')),
+  estado                          text not null default 'PENDIENTE' check (estado in ('PENDIENTE','VERIFICADA','RECHAZADA','RETIRADA')),
 
   -- 1. Cédula de Identidad y Electoral (JCE)
   cedula                          char(11) not null check (cedula ~ '^\d{11}$'),
-  fecha_expedicion                date,
   fecha_expiracion                date not null,
-  cedula_anterior                 text check (char_length(cedula_anterior) <= 30),
 
   -- 2. Datos personales (JCE)
   nombres                         text not null check (char_length(nombres) between 1 and 80),
@@ -59,16 +57,8 @@ create table if not exists crm.inscripciones (
   tipo_sangre                     text check (tipo_sangre in ('O+','O-','A+','A-','B+','B-','AB+','AB-','NO_SABE')),
   ocupacion                       text not null,
 
-  -- 3. Acta de nacimiento (Registro Civil, JCE)
-  acta_oficialia                  text,
-  acta_libro                      text,
-  acta_folio                      text,
-  acta_numero                     text,
-  acta_anio                       text check (acta_anio ~ '^\d{4}$'),
-  nombre_padre                    text,
-  nombre_madre                    text,
 
-  -- 4. Domicilio (JCE)
+  -- 3. Domicilio (JCE)
   domicilio_provincia             char(2) not null check (domicilio_provincia ~ '^(0[1-9]|[12]\d|3[0-2])$'),
   domicilio_municipio             text not null,
   domicilio_distrito_municipal    text,
@@ -81,7 +71,7 @@ create table if not exists crm.inscripciones (
   domicilio_referencia            text,
   domicilio_codigo_postal         text check (domicilio_codigo_postal ~ '^\d{5}$'),
 
-  -- 5. Lugar de votación (padrón JCE)
+  -- 4. Lugar de votación (padrón JCE)
   vota_en_exterior                boolean not null default false,
   exterior_circunscripcion        text check (exterior_circunscripcion in ('E1','E2','E3')),
   exterior_pais                   text,
@@ -96,7 +86,7 @@ create table if not exists crm.inscripciones (
   colegio_electoral               text check (colegio_electoral ~ '^\d{4}[A-Za-z]?$'),
   posicion_padron                 text check (posicion_padron ~ '^\d{1,5}$'),
 
-  -- 6. Contacto (voluntario)
+  -- 5. Contacto (voluntario)
   telefono_movil                  text not null,
   telefono_residencial            text,
   whatsapp                        text,
@@ -104,16 +94,8 @@ create table if not exists crm.inscripciones (
   nivel_academico                 text,
   canal_preferido                 text check (canal_preferido in ('WHATSAPP','SMS','LLAMADA','EMAIL')),
 
-  -- 7. Estructura organizativa
-  cargo_solicitado                text not null check (cargo_solicitado in ('COORDINADOR_GENERAL','COORDINADOR_OPERATIVO','SUPERVISOR','PROMOTOR','MULTIPLICADOR')),
-  jurisdiccion_nivel              text not null check (jurisdiccion_nivel in ('PROVINCIA','MUNICIPIO','DISTRITO_MUNICIPAL')),
-  jurisdiccion_provincia          char(2) not null check (jurisdiccion_provincia ~ '^(0[1-9]|[12]\d|3[0-2])$'),
-  jurisdiccion_municipio          text,
-  jurisdiccion_distrito_municipal text,
-  referido_por_cedula             char(11) check (referido_por_cedula ~ '^\d{11}$'),
-  observaciones                   text check (char_length(observaciones) <= 1000),
 
-  -- 8. Consentimientos (Ley 172-13)
+  -- 6. Consentimientos (Ley 172-13)
   consentimiento_tratamiento      boolean not null check (consentimiento_tratamiento),
   consentimiento_comunicaciones   boolean not null default false,
   declaracion_veracidad           boolean not null check (declaracion_veracidad),
@@ -127,18 +109,13 @@ create table if not exists crm.inscripciones (
   constraint inscripciones_exterior check (
     (vota_en_exterior and exterior_circunscripcion is not null and exterior_pais is not null)
     or (not vota_en_exterior and exterior_circunscripcion is null)
-  ),
-  constraint inscripciones_jurisdiccion check (
-    (jurisdiccion_nivel = 'PROVINCIA')
-    or (jurisdiccion_nivel = 'MUNICIPIO' and jurisdiccion_municipio is not null)
-    or (jurisdiccion_nivel = 'DISTRITO_MUNICIPAL' and jurisdiccion_municipio is not null and jurisdiccion_distrito_municipal is not null)
   )
 );
 
-create index if not exists inscripciones_org_jurisdiccion_idx
-  on crm.inscripciones (organization_id, jurisdiccion_provincia, jurisdiccion_municipio);
+create index if not exists inscripciones_org_domicilio_idx
+  on crm.inscripciones (organization_id, domicilio_provincia, domicilio_municipio);
 create index if not exists inscripciones_org_estado_idx
-  on crm.inscripciones (organization_id, estado_postulacion);
+  on crm.inscripciones (organization_id, estado);
 
 -- Seguridad por fila: cada organización solo ve sus propias inscripciones.
 -- La inserción pública se hace desde el servidor con la service role (que omite RLS),
