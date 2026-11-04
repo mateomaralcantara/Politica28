@@ -9,6 +9,9 @@ Junta Central Electoral, más contacto y consentimientos de la Ley 172-13.
   y una ficha por módulo pendiente (`app/(crm)/[modulo]`)
 - Formulario: `/inscripcion`, un solo panel (`components/InscripcionForm.tsx`, campos en `lib/inscripcion/campos.ts`)
 - Estilo: blanco y azul (`app/globals.css`)
+- Identidad al compartir: ícono, imagen de vista previa para WhatsApp/Facebook/X y manifiesto PWA
+  (`app/icon.png`, `app/opengraph-image.png`, `app/manifest.ts`). Para regenerarlos:
+  `node scripts/generar-iconos.mjs` (requiere Playwright)
 - API: `POST /api/inscripciones` (validación zod; 201 / 409 cédula duplicada / 422 errores por campo)
 - Base de datos: `supabase/migrations/0001_inscripciones.sql` (esquema `crm`, RLS por organización)
 - Matriz de campos: [`docs/INSCRIPCION-CAMPOS-JCE.md`](docs/INSCRIPCION-CAMPOS-JCE.md)
