@@ -45,23 +45,28 @@ export default async function CentroDeMando() {
           <div aria-hidden className="animar-flotar absolute -right-16 -top-24 h-72 w-72 rounded-full bg-sky-300/40 blur-3xl" />
           <div aria-hidden className="animar-flotar-lento absolute -bottom-28 left-1/4 h-72 w-72 rounded-full bg-blue-300/40 blur-3xl" />
           <div aria-hidden className="absolute inset-0 opacity-[0.12] [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:22px_22px]" />
-          <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-blue-50 backdrop-blur">
-                {fecha.charAt(0).toUpperCase() + fecha.slice(1)}
-              </p>
-              <h1 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">{saludo(ahora)}</h1>
-              <p className="mt-2 max-w-xl text-sm text-blue-50/90">
-                Así va la organización hoy. Cifras agregadas: ningún dato personal se muestra en este panel.
-              </p>
+          <div className="relative">
+            <p className="inline-flex rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-blue-50 backdrop-blur">
+              {fecha.charAt(0).toUpperCase() + fecha.slice(1)}
+            </p>
+            <h1 className="font-marca mt-4 text-[clamp(2.6rem,8.5vw,6.5rem)] leading-[0.92] font-black tracking-[-0.045em] drop-shadow-[0_6px_24px_rgba(15,23,42,0.25)]">
+              POLÍTICA <span className="bg-gradient-to-br from-white via-sky-100 to-sky-300 bg-clip-text text-transparent">28</span>
+            </h1>
+            <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-xl font-bold tracking-tight sm:text-2xl">{saludo(ahora)}</p>
+                <p className="mt-1 max-w-xl text-sm text-blue-50/90">
+                  Así va la organización hoy. Cifras agregadas: ningún dato personal se muestra en este panel.
+                </p>
+              </div>
+              <Link
+                href="/inscripcion"
+                className="con-reflejo group inline-flex items-center gap-2 self-start rounded-xl bg-white px-5 py-3 text-sm font-bold text-blue-700 shadow-xl shadow-blue-900/20 transition hover:-translate-y-0.5 hover:shadow-2xl sm:self-auto"
+              >
+                <Icono nombre="mas" className="h-4 w-4" /> Registrar inscripción
+                <Icono nombre="flecha" className="h-4 w-4 transition group-hover:translate-x-1" />
+              </Link>
             </div>
-            <Link
-              href="/inscripcion"
-              className="con-reflejo group inline-flex items-center gap-2 self-start rounded-xl bg-white px-5 py-3 text-sm font-bold text-blue-700 shadow-xl shadow-blue-900/20 transition hover:-translate-y-0.5 hover:shadow-2xl sm:self-auto"
-            >
-              <Icono nombre="mas" className="h-4 w-4" /> Registrar inscripción
-              <Icono nombre="flecha" className="h-4 w-4 transition group-hover:translate-x-1" />
-            </Link>
           </div>
         </div>
       </section>

@@ -37,15 +37,21 @@ export default function CrmShell({ children, modoDemo }: { children: React.React
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-72 flex-col border-r border-white/60 bg-white/80 shadow-[8px_0_40px_-20px_rgba(30,58,138,0.3)] backdrop-blur-xl transition-transform duration-300 lg:translate-x-0 ${abierto ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <div className="flex items-center gap-3 px-5 pt-6 pb-4">
-          <div className="con-reflejo degradado-vivo font-marca grid h-11 w-11 place-items-center rounded-2xl bg-gradiente text-[17px] font-black tracking-tighter text-white shadow-lg shadow-blue-500/30">
-            28
-          </div>
-          <div>
-            <p><Marca /></p>
-            <p className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.14em] text-slate-400">Gestión territorial · RD</p>
-          </div>
-          <button className="ml-auto rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden" aria-label="Cerrar menú" onClick={() => setAbierto(false)}>
+        <div className="relative px-5 pt-7 pb-5">
+          <Link href="/" className="group block" aria-label="POLÍTICA 28 — ir al centro de mando">
+            <span className="font-marca block text-[34px] leading-[0.9] font-black tracking-[-0.045em] text-slate-900 transition group-hover:text-blue-900">
+              POLÍTICA
+            </span>
+            <span className="mt-1 flex items-end gap-3">
+              <span className="font-marca texto-gradiente degradado-vivo text-[64px] leading-[0.82] font-black tracking-[-0.06em]">28</span>
+              <span className="pb-1 text-[10px] leading-tight font-bold uppercase tracking-[0.16em] text-slate-400">
+                Gestión
+                <br />
+                territorial · RD
+              </span>
+            </span>
+          </Link>
+          <button className="absolute right-3 top-5 rounded-lg p-2 text-slate-500 hover:bg-slate-100 lg:hidden" aria-label="Cerrar menú" onClick={() => setAbierto(false)}>
             <Icono nombre="cerrar" />
           </button>
         </div>
